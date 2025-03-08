@@ -1,12 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+// Components
+import { LayoutComponent } from './shared/components/layout/layout.component';
+
+// Services
+import { MetaService } from './core/config/meta.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LayoutComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'ng-public-site';
+export class AppComponent implements OnInit {
+  constructor(private metaService: MetaService) {}
+
+  ngOnInit(): void {
+    this.metaService.initializeMetaTags();
+  }
 }

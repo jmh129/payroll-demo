@@ -1,6 +1,15 @@
 {
-  "name": "ng-public-site",
-  "version": "0.0.0",
+  "name": "payroll-dashboard",
+  "version": "1.0.0",
+  "description": "A demo payroll dashboard built with Angular",
+  "author": "James Holding",
+  "keywords": [
+    "payroll",
+    "demo",
+    "Angular",
+    "dashboard"
+  ],
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,10 +20,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.1.0",
+    "@angular/cdk": "^19.2.2",
     "@angular/common": "^19.1.0",
     "@angular/compiler": "^19.1.0",
     "@angular/core": "^19.1.0",
     "@angular/forms": "^19.1.0",
+    "@angular/material": "^19.2.2",
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",

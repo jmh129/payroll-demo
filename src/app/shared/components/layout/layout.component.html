@@ -1,0 +1,18 @@
+<app-header (toggleSidenav)="toggleSidenav()"></app-header>
+<mat-sidenav-container>
+  <mat-sidenav
+    [mode]="'over'"
+    [opened]="sidenavOpen()"
+    (closed)="sidenavOpen.set(false)"
+  >
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="layout-container">
+      <main class="content">
+        <ng-content></ng-content>
+      </main>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-footer></app-footer>

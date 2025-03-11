@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Install Angular CLI globally
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli@19
+
+      # Build the Angular app
+      - name: Build
+        run: ng build --configuration=production --base-href "https://jmh129.github.io/payroll-demo/"
+
+      # Deploy to gh-pages branch
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: dist/ng-public-site

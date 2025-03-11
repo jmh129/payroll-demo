@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, ViewChild, signal } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 
@@ -9,6 +9,7 @@ import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-layout',
+  standalone: true,
   imports: [
     MatSidenavModule,
     MatListModule,
@@ -17,21 +18,19 @@ import { FooterComponent } from '../footer/footer.component';
     FooterComponent,
   ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
-  sidenavOpen = signal(false);
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  isSidenavOpen = signal(false);
 
   toggleSidenav() {
-    this.sidenavOpen.update((value) => !value);
+    this.sidenav.toggle();
+    this.isSidenavOpen.update((value) => !value);
   }
 
   closeSidenav() {
     this.sidenav.close();
-  }
-
-  openSidenav() {
-    this.sidenav.open();
+    this.isSidenavOpen.set(false);
   }
 }

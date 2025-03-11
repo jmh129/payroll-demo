@@ -1,13 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, Input, signal, computed } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 
+// Service
+import { NavItem, NavigationService } from '../../service/navigation.service';
+
 @Component({
-  selector: 'app-sidenav',
   standalone: true,
   imports: [MatSidenavModule, RouterModule, MatListModule],
+  selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.scss',
+  styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent {}
+export class SidenavComponent {
+  @Input() onClose?: () => void;
+  navItems = signal<NavItem[]>([]);
+  currentRoute = signal<string>('');
+
+  activeItem = computed(() => {
+    return (
+      this.navItems().find((item) => item.path === this.currentRoute()) || null
+    );
+  });
+
+  constructor(
+    private navigationService: NavigationService,
+    private router: Router
+  ) {
+    this.navItems.set(this.navigationService.getNavItems());
+    this.router.events.subscribe(() => {
+      this.currentRoute.set(this.router.url);
+    });
+  }
+
+  navigate(item: NavItem) {
+    this.router.navigate([item.path]);
+    this.currentRoute.set(item.path);
+    if (this.onClose) {
+      this.onClose();
+    }
+  }
+}

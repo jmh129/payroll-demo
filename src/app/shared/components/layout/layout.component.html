@@ -4,10 +4,12 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav
       #sidenav
+      [fixedInViewport]="true"
       [mode]="'over'"
       [opened]="isSidenavOpen()"
       (opened)="isSidenavOpen.set(true)"
       (closed)="isSidenavOpen.set(false)"
+      [autoFocus]="false"
     >
       <app-sidenav [onClose]="closeSidenav.bind(this)"></app-sidenav>
     </mat-sidenav>

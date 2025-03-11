@@ -1,0 +1,62 @@
+<div class="profile-container">
+  <div class="avatar-container">
+    <mat-icon class="avatar-icon">account_circle</mat-icon>
+  </div>
+
+  <h2 mat-dialog-title>{{ user.name }}</h2>
+
+  <mat-dialog-content>
+    <mat-list>
+      <mat-list-item>
+        <mat-icon matListItemIcon>email</mat-icon>
+        <div matListItemTitle>Email</div>
+        <div matListItemLine>{{ user.email }}</div>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item *ngIf="user.phoneNumber">
+        <mat-icon matListItemIcon>phone</mat-icon>
+        <div matListItemTitle>Phone</div>
+        <div matListItemLine>{{ user.phoneNumber }}</div>
+      </mat-list-item>
+
+      <mat-divider *ngIf="user.phoneNumber"></mat-divider>
+
+      <mat-list-item>
+        <mat-icon matListItemIcon>work</mat-icon>
+        <div matListItemTitle>Role</div>
+        <div matListItemLine>{{ user.role }}</div>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item *ngIf="user.department">
+        <mat-icon matListItemIcon>business</mat-icon>
+        <div matListItemTitle>Department</div>
+        <div matListItemLine>{{ user.department }}</div>
+      </mat-list-item>
+
+      <mat-divider *ngIf="user.department"></mat-divider>
+
+      <mat-list-item>
+        <mat-icon matListItemIcon>public</mat-icon>
+        <div matListItemTitle>Country</div>
+        <div matListItemLine>{{ user.country }}</div>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item *ngIf="user.lastLogin">
+        <mat-icon matListItemIcon>access_time</mat-icon>
+        <div matListItemTitle>Last Login</div>
+        <div matListItemLine>{{ user.lastLogin | date }}</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Close</button>
+    <button mat-button (click)="logoutAction()">Logout</button>
+  </mat-dialog-actions>
+</div>

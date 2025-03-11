@@ -4,7 +4,6 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav
       #sidenav
-      [fixedInViewport]="true"
       [mode]="'over'"
       [opened]="isSidenavOpen()"
       (opened)="isSidenavOpen.set(true)"
@@ -16,8 +15,7 @@
 
     <mat-sidenav-content>
       <ng-content></ng-content>
+      <app-footer></app-footer>
     </mat-sidenav-content>
   </mat-sidenav-container>
-
-  <app-footer></app-footer>
 </div>

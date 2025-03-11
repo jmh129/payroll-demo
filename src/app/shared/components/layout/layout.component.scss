@@ -1,20 +1,9 @@
-mat-sidenav-container {
-  height: 100vh;
-  width: 100vw;
-}
-
-mat-sidenav-content {
+.app-container {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.layout-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-main.content {
-  flex-grow: 1;
+.sidenav-container {
+  flex: 1;
 }

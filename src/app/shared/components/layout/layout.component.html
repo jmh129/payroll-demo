@@ -1,21 +1,21 @@
-<app-header (toggleSidenav)="toggleSidenav()"></app-header>
-<mat-sidenav-container>
-  <mat-sidenav
-    fixedInViewport
-    [autoFocus]="false"
-    mode="over"
-    [opened]="isSidenavOpen()"
-    (opened)="isSidenavOpen.set(true)"
-    (closed)="isSidenavOpen.set(false)"
-  >
-    <app-sidenav [onClose]="closeSidenav.bind(this)"></app-sidenav>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="layout-container">
-      <main class="content">
-        <ng-content></ng-content>
-      </main>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-<app-footer></app-footer>
+<div class="app-container">
+  <app-header (toggleSidenav)="toggleSidenav()"></app-header>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #sidenav
+      [mode]="'over'"
+      [opened]="isSidenavOpen()"
+      (opened)="isSidenavOpen.set(true)"
+      (closed)="isSidenavOpen.set(false)"
+    >
+      <app-sidenav [onClose]="closeSidenav.bind(this)"></app-sidenav>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <app-footer></app-footer>
+</div>

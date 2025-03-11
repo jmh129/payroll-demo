@@ -59,17 +59,33 @@ export class EmployeeProfileComponent {
   employeeStatuses = Object.values(EmployeeStatus);
   employeeForm: FormGroup;
   countries: CountryLocale[] = COUNTRIES;
-
-  // For date handling
   dateValue: Date | null = null;
+  isNewEmployee: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<EmployeeProfileComponent>,
-    @Inject(MAT_DIALOG_DATA) public employee: Employee,
+    @Inject(MAT_DIALOG_DATA) public employee: Employee | null,
     private notification: NotificationService,
     private fb: FormBuilder
   ) {
-    this.editedEmployee = JSON.parse(JSON.stringify(employee));
+    this.isNewEmployee = !employee;
+    this.editMode = this.isNewEmployee;
+
+    this.editedEmployee = employee
+      ? JSON.parse(JSON.stringify(employee))
+      : {
+          id: crypto.randomUUID(),
+          name: '',
+          role: '',
+          baseSalary: 0,
+          currency: 'USD',
+          country: '',
+          hireDate: '',
+          email: '',
+          status: EmployeeStatus.Active,
+          department: undefined,
+          phoneNumber: undefined,
+        };
 
     if (this.editedEmployee.hireDate) {
       this.dateValue = new Date(this.editedEmployee.hireDate);
@@ -77,6 +93,7 @@ export class EmployeeProfileComponent {
 
     // Initialize the form with validators
     this.employeeForm = this.fb.group({
+      name: [this.editedEmployee.name, Validators.required],
       role: [this.editedEmployee.role, Validators.required],
       department: [this.editedEmployee.department],
       email: [
@@ -85,7 +102,6 @@ export class EmployeeProfileComponent {
       ],
       phoneNumber: [
         this.editedEmployee.phoneNumber,
-        // Simple Validation for phone number (can be extended)
         [Validators.pattern(/^\+?[0-9\s\-\(\)]+$/)],
       ],
       country: [this.editedEmployee.country, Validators.required],
@@ -96,16 +112,14 @@ export class EmployeeProfileComponent {
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
-    if (!this.editMode) {
-      // Reset to original values if cancel is clicked
+    if (!this.editMode && !this.isNewEmployee) {
+      // Reset to original values if canceling edit (not for new employees)
       this.editedEmployee = JSON.parse(JSON.stringify(this.employee));
-
       if (this.editedEmployee.hireDate) {
         this.dateValue = new Date(this.editedEmployee.hireDate);
       }
-
-      // Reset form values
       this.employeeForm.patchValue({
+        name: this.editedEmployee.name,
         role: this.editedEmployee.role,
         department: this.editedEmployee.department,
         email: this.editedEmployee.email,
@@ -122,11 +136,7 @@ export class EmployeeProfileComponent {
       this.dateValue = event.value;
       const date = new Date(event.value);
       this.editedEmployee.hireDate = date.toISOString().split('T')[0];
-
-      // Update form control value
-      this.employeeForm.patchValue({
-        hireDate: this.dateValue,
-      });
+      this.employeeForm.patchValue({ hireDate: this.dateValue });
     }
   }
 
@@ -136,22 +146,20 @@ export class EmployeeProfileComponent {
   }
 
   saveChanges(): void {
-    // Check if form is valid
     if (this.employeeForm.invalid) {
       this.notification.error('Please fix the validation errors before saving');
       return;
     }
 
     try {
-      // Update the editedEmployee with form values
+      // Update editedEmployee with form values
+      this.editedEmployee.name = this.employeeForm.value.name;
       this.editedEmployee.role = this.employeeForm.value.role;
       this.editedEmployee.department = this.employeeForm.value.department;
       this.editedEmployee.email = this.employeeForm.value.email;
       this.editedEmployee.phoneNumber = this.employeeForm.value.phoneNumber;
       this.editedEmployee.country = this.employeeForm.value.country;
       this.editedEmployee.status = this.employeeForm.value.status;
-
-      // Handle date
       if (this.dateValue) {
         this.editedEmployee.hireDate = this.dateValue
           .toISOString()
@@ -159,20 +167,22 @@ export class EmployeeProfileComponent {
       }
 
       this.editMode = false;
-
-      const successMessage = `${NameUtils.toPossessive(
-        this.employee.name
-      )} profile updated successfully`;
+      const successMessage = this.isNewEmployee
+        ? `${NameUtils.toPossessive(
+            this.editedEmployee.name
+          )} profile created successfully`
+        : `${NameUtils.toPossessive(
+            this.editedEmployee.name
+          )} profile updated successfully`;
       this.notification.success(successMessage);
 
       this.dialogRef.close(this.editedEmployee);
     } catch (error) {
-      this.notification.error('Failed to update profile. Please try again.');
+      this.notification.error('Failed to save profile. Please try again.');
       console.error('Error saving employee data:', error);
     }
   }
 
-  // Helper methods for template
   hasError(controlName: string, errorType: string): boolean {
     const control = this.employeeForm.get(controlName);
     return control

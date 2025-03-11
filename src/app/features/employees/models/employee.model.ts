@@ -1,5 +1,3 @@
-// src/app/models/employee.model.ts
-
 export enum EmployeeStatus {
   Active = 'Active',
   OnLeave = 'On Leave',

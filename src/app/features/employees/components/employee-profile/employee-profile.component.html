@@ -1,11 +1,20 @@
 <h2 mat-dialog-title>
-  {{ employee.name }}
+  {{
+    isNewEmployee ? "Add New Employee" : employee?.name || "Employee Profile"
+  }}
 </h2>
 <mat-dialog-content>
   @let isEditing = editMode; @if (isEditing) {
   <form [formGroup]="employeeForm">
     <!-- Personal Info -->
     <div>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="hasError('name', 'required')"
+          >Name is required</mat-error
+        >
+      </mat-form-field>
       <mat-form-field>
         <mat-label>Role</mat-label>
         <input matInput formControlName="role" />
@@ -86,25 +95,20 @@
       </mat-form-field>
     </div>
   </form>
-  } @else {
-  <!-- Non-Editing Layout -->
+  } @else if (!isNewEmployee && employee) {
+  <!-- Non-Editing Layout (only for existing employees with employee defined) -->
   <mat-list>
-    <!-- Personal Info -->
     <mat-list-item>
       <img matListItemAvatar />
       <span matListItemTitle>{{ employee.role }}</span>
       <span matListItemLine>{{ employee.department || "N/A" }}</span>
     </mat-list-item>
-
-    <!-- Contact Info -->
     <mat-list-item>
       <mat-icon matListItemIcon>contact_mail</mat-icon>
       <span matListItemTitle>Contact:</span>
       <span matListItemLine>Email: {{ employee.email }}</span>
       <span matListItemLine>Phone: {{ employee.phoneNumber || "N/A" }}</span>
     </mat-list-item>
-
-    <!-- Employment Details -->
     <mat-list-item>
       <mat-icon matListItemIcon>work</mat-icon>
       <span matListItemTitle>Employment Details:</span>
@@ -120,11 +124,16 @@
 
 <mat-dialog-actions>
   @let isEditingActions = editMode; @if (isEditingActions) {
-  <button mat-button (click)="toggleEditMode()">Cancel</button>
+  <button mat-button (click)="toggleEditMode()" *ngIf="!isNewEmployee">
+    Cancel
+  </button>
+  <button mat-button (click)="dialogRef.close()" *ngIf="isNewEmployee">
+    Cancel
+  </button>
   <button mat-button [disabled]="employeeForm.invalid" (click)="saveChanges()">
     Save
   </button>
-  } @else {
+  } @else if (employee) {
   <button mat-button mat-dialog-close>Close</button>
   <button mat-button (click)="toggleEditMode()">Edit</button>
   }

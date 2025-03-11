@@ -1,17 +1,17 @@
-<mat-toolbar>
-  <mat-form-field>
-    <mat-label>Search</mat-label>
-    <input matInput placeholder="Search employees" (input)="onSearch($event)" />
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-</mat-toolbar>
+<app-employee-toolbar
+  [employeeStatuses]="employeeStatuses"
+  (addEmployee)="onAddEmployee()"
+  (filterChange)="updateFilteredEmployees()"
+></app-employee-toolbar>
 
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator="true">
   @for (employee of employees(); track employee.id) {
   <mat-list-option [value]="employee" (click)="onEmployeeClick(employee)">
     <mat-icon matListItemAvatar></mat-icon>
     <span matListItemTitle>{{ employee.name }}</span>
-    <span matListItemLine>{{ employee.department }} - {{ employee.role }}</span>
+    <span matListItemLine
+      >{{ employee.department ?? "N/A" }} - {{ employee.role }}</span
+    >
     <span>{{ employee.status }}</span>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list-option>

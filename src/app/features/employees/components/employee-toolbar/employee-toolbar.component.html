@@ -1,0 +1,69 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        placeholder="Search employees"
+        (input)="onSearch($event)"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <span style="flex: 1 1 auto"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu button">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="filterMenu">
+        <mat-icon>filter_list</mat-icon>
+        <span>Filters</span>
+      </button>
+      <button mat-menu-item (click)="addEmployee.emit()">
+        <mat-icon>add</mat-icon>
+        <span>Add Employee</span>
+      </button>
+    </mat-menu>
+
+    <!-- Dynamic filter submenu -->
+    <mat-menu #filterMenu="matMenu">
+      @for (status of employeeStatuses; track status) {
+      <button
+        mat-menu-item
+        (click)="filterService.toggleFilter(status); filterChange.emit()"
+      >
+        <mat-icon>{{
+          filterService.selectedFilters().includes(status)
+            ? "check_box"
+            : "check_box_outline_blank"
+        }}</mat-icon>
+        <span>{{ status }}</span>
+      </button>
+      }
+      <mat-divider></mat-divider>
+      <button
+        mat-menu-item
+        (click)="filterService.clearFilters(); filterChange.emit()"
+        [disabled]="filterService.selectedFilters().length === 0"
+      >
+        <span>Clear Filters</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+
+  <!-- Filter Chips Row -->
+  @if (filterService.selectedFilters().length > 0) {
+  <mat-toolbar-row>
+    @for (filter of filterService.selectedFilters(); track filter) {
+    <mat-chip>
+      {{ filter }}
+      <button
+        matChipRemove
+        (click)="filterService.removeFilter(filter); filterChange.emit()"
+      >
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    }
+  </mat-toolbar-row>
+  }
+</mat-toolbar>

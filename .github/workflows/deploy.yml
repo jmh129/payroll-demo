@@ -2,7 +2,7 @@ name: Deploy Angular to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main] # Triggers on push to main branch
 
 # Grant write permissions to the GITHUB_TOKEN
 permissions:
@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
 
       # Install dependencies
       - name: Install Dependencies
@@ -32,9 +33,13 @@ jobs:
           npm install -g @angular/cli@19
           ng build --configuration=production --base-href "/payroll-demo/"
 
+      # Create 404.html for GitHub Pages routing
+      - name: Create 404 Page
+        run: cp dist/browser/index.html dist/browser/404.html
+
       # Deploy to gh-pages
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist/ng-public-site
+          branch: gh-pages # Deploys to gh-pages branch
+          folder: dist/browser # Folder to deploy

@@ -9,22 +9,22 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import(
-        './features/dashboard/components/dashboard/dashboard.component'
-      ).then((m) => m.DashboardComponent),
+      import('./features/dashboard/pages/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
   },
   {
     path: 'employees',
     loadComponent: () =>
-      import(
-        './features/employees/components/employee-list/employee-list.component'
-      ).then((m) => m.EmployeeListComponent),
+      import('./features/employees/pages/employee/employee.component').then(
+        (m) => m.EmployeeComponent
+      ),
   },
   {
     path: 'payroll',
     loadComponent: () =>
-      import(
-        './features/payroll/components/payroll-list/payroll-list.component'
-      ).then((m) => m.PayrollListComponent),
+      import('./features/payroll/pages/payroll/payroll.component').then(
+        (m) => m.PayrollComponent
+      ),
   },
 ];

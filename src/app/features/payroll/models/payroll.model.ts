@@ -45,3 +45,8 @@ export interface PayslipWithDetails {
   employeeName: string;
   periodStatus: PayPeriodStatus | string;
 }
+
+export interface PayrollPeriodGroup {
+  periodId: string;
+  items: PayslipWithDetails[];
+}

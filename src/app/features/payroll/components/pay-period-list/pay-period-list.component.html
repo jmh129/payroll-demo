@@ -1,0 +1,141 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- Expandable version (for Payroll page) -->
+    @if (expandable) {
+    <mat-accordion>
+      @for (period of payPeriods; track period.id) {
+      <mat-expansion-panel [expanded]="isCurrentPeriod(period.id)">
+        <mat-expansion-panel-header>
+          <mat-panel-title
+            >{{ period.startDate }} - {{ period.endDate }}</mat-panel-title
+          >
+          <mat-panel-description>
+            <mat-chip
+              [color]="
+                period.status === PayPeriodStatus.Pending ? 'warn' : 'primary'
+              "
+              highlighted
+            >
+              {{ period.status }}
+            </mat-chip>
+
+            @if (period.status === PayPeriodStatus.Pending) {
+            <button
+              mat-button
+              color="primary"
+              (click)="onProcessPayroll(period, $event)"
+            >
+              Process
+            </button>
+            }
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- Summary section inside expansion panel -->
+        @if (findGroup(period.id); as group) {
+        <div class="period-summary">
+          <mat-card>
+            <mat-card-content>
+              <mat-chip-set>
+                <mat-chip>Employees: {{ group.items.length }}</mat-chip>
+                <mat-chip
+                  >Total:
+                  {{ calculatePeriodTotal(group.items) | currency }}</mat-chip
+                >
+              </mat-chip-set>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Employee payslips list -->
+        @if (group.items.length > 0) {
+        <mat-list>
+          @for (item of group.items; track item.payslip.id) {
+          <mat-list-item (click)="onViewPayslip(item)">
+            <span matListItemTitle>{{ item.employeeName }}</span>
+            <span matListItemLine>
+              Net Pay: {{ item.payslip.netPay | currency }}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          }
+        </mat-list>
+        } @else {
+        <div>
+          <p>No payslips generated for this period yet.</p>
+        </div>
+        } } @else {
+        <div class="period-summary">
+          <mat-card>
+            <mat-card-content>
+              <mat-chip-set>
+                <mat-chip>Employees: 0</mat-chip>
+                <mat-chip>Total: {{ 0 | currency }}</mat-chip>
+              </mat-chip-set>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div>
+          <p>No payslips generated for this period yet.</p>
+        </div>
+        } @if (period.status === PayPeriodStatus.Pending) {
+        <mat-action-row>
+          <button
+            mat-button
+            color="accent"
+            (click)="onAssignEmployees(period.id, $event)"
+          >
+            Assign Employees
+          </button>
+        </mat-action-row>
+        }
+      </mat-expansion-panel>
+      }
+    </mat-accordion>
+    }
+    <!-- Simple list version (for Dashboard) -->
+    @else {
+    <mat-list>
+      @for (period of payPeriods; track period.id) {
+      <mat-list-item (click)="onPeriodClick(period)">
+        <span matListItemTitle
+          >{{ period.startDate }} - {{ period.endDate }}</span
+        >
+        <span matListItemMeta>
+          <mat-chip
+            [color]="
+              period.status === PayPeriodStatus.Pending ? 'warn' : 'primary'
+            "
+            highlighted
+          >
+            {{ period.status }}
+          </mat-chip>
+
+          @if (period.status === PayPeriodStatus.Pending) {
+          <button
+            mat-button
+            color="primary"
+            (click)="onProcessPayroll(period, $event)"
+          >
+            Process
+          </button>
+          }
+        </span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      }
+    </mat-list>
+    }
+
+    <!-- Empty state -->
+    @if (payPeriods.length === 0) {
+    <div style="text-align: center; padding: 20px">
+      <mat-icon>info</mat-icon>
+      <p>No pay periods found</p>
+    </div>
+    }
+  </mat-card-content>
+</mat-card>

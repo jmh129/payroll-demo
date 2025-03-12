@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Assign Employees to Pay Period</h2>
+<mat-dialog-content>
+  <h3>Pay Period: {{ data.payPeriod.id }}</h3>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Search Employees</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Name, role, or department"
+    />
+  </mat-form-field>
+
+  <div class="selection-actions">
+    <button mat-button (click)="selectAll()">Select All</button>
+    <button mat-button (click)="clearSelection()">Clear</button>
+    <span>{{ selectedEmployeeIds.size }} employees selected</span>
+  </div>
+
+  @if (filteredEmployees.length === 0) {
+  <p>No employees available to assign to this pay period.</p>
+  }
+
+  <mat-list>
+    @for (employee of filteredEmployees; track employee.id) {
+    <mat-list-item>
+      <mat-checkbox
+        [checked]="isSelected(employee.id)"
+        (change)="toggleEmployee(employee.id)"
+      >
+        {{ employee.name }}
+      </mat-checkbox>
+      <span>{{ employee.role }}</span>
+      @if (employee.department) {
+      <mat-chip>{{ employee.department }}</mat-chip>
+      }
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    }
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="selectedEmployeeIds.size === 0"
+    (click)="confirm()"
+  >
+    Assign Employees
+  </button>
+</mat-dialog-actions>

@@ -1,24 +1,25 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
 
 // Models
 import {
   PayPeriod,
+  Payslip,
   PayPeriodStatus,
 } from '../../../payroll/models/payroll.model';
 
 // Services
 import { PayrollService } from '../../../payroll/service/payroll.service';
 import { PayrollAnalytics } from '../../../payroll/service/payroll-analytics.service';
+import { NotificationService } from '../../../../shared/service/notification.service';
 
 // Components
 import { PayrollChartComponent } from '../../../payroll/components/payroll-chart/payroll-chart.component';
+import { PayPeriodListComponent } from '../../../payroll/components/pay-period-list/pay-period-list.component';
 
 @Component({
   standalone: true,
@@ -26,10 +27,9 @@ import { PayrollChartComponent } from '../../../payroll/components/payroll-chart
     MatCardModule,
     MatButtonModule,
     MatChipsModule,
-    MatListModule,
-    MatDividerModule,
     CurrencyPipe,
     PayrollChartComponent,
+    PayPeriodListComponent,
   ],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -39,23 +39,24 @@ export class DashboardComponent {
   activeEmployeeCount = signal<number>(0);
   lastPayrollCost = signal<number>(0);
 
-  PayPeriodStatus = PayPeriodStatus;
-
   constructor(
     private payrollService: PayrollService,
     private payrollAnalytics: PayrollAnalytics,
+    private notification: NotificationService,
     private router: Router
   ) {
     this.updateDashboardData();
+
+    effect(() => {
+      this.updateDashboardData();
+    });
   }
 
   updateDashboardData(): void {
-    // Get latest data
     const employees = this.payrollService.getEmployees()();
     const payPeriods = this.payrollService.getPayPeriods()();
     const payslips = this.payrollService.getPayslips()();
 
-    // Update signals using analytics service
     this.payPeriods.set(payPeriods);
     this.activeEmployeeCount.set(
       this.payrollAnalytics.getActiveEmployeeCount(employees)
@@ -66,11 +67,18 @@ export class DashboardComponent {
   }
 
   processPayroll(period: PayPeriod): void {
-    // Process the payroll
     this.payrollService.processPayroll(period.id);
-
-    // Update all dashboard data
+    this.notification.success(
+      `Payroll for period ${period.id} processed successfully`
+    );
     this.updateDashboardData();
+  }
+
+  // New method to handle period click and navigate
+  navigateToPayrollWithPeriod(periodId: string): void {
+    this.router.navigate(['/payroll'], {
+      queryParams: { expandedPeriodId: periodId },
+    });
   }
 
   navigateToPayroll(): void {

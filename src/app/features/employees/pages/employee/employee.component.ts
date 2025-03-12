@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 
 // Components
-import { EmployeeToolbarComponent } from '../employee-toolbar/employee-toolbar.component';
-import { EmployeeProfileComponent } from '../employee-profile/employee-profile.component';
+import { EmployeeProfileComponent } from '../../components/employee-profile/employee-profile.component';
+import { EmployeeToolbarComponent } from '../../components/employee-toolbar/employee-toolbar.component';
 
 // Models and Mocks
 import { Employee, EmployeeStatus } from '../../models/employee.model';
@@ -16,11 +16,11 @@ import { EmployeeFilterService } from '../../service/employee-filter.service';
 @Component({
   standalone: true,
   imports: [MatListModule, EmployeeToolbarComponent],
-  selector: 'app-employee-list',
-  templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.scss'],
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.scss'],
 })
-export class EmployeeListComponent {
+export class EmployeeComponent {
   private allEmployees = MOCK_EMPLOYEES;
   employees = signal<Employee[]>(this.allEmployees);
   employeeStatuses = Object.values(EmployeeStatus);

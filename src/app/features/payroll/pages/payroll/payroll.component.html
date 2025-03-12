@@ -1,0 +1,16 @@
+<app-payroll-toolbar
+  (filterChange)="updatePayrollData()"
+  (addPayPeriod)="addNewPayPeriod()"
+>
+</app-payroll-toolbar>
+
+<app-pay-period-list
+  [payPeriods]="payPeriods()"
+  [payslipGroups]="payrollGroups()"
+  [currentPeriodId]="currentPeriodId()"
+  [expandable]="true"
+  title="Payroll Management"
+  (processPayroll)="processPayroll($event)"
+  (assignEmployees)="assignEmployeesToPeriod($event)"
+  (viewPayslip)="onPayslipClick($event)"
+></app-pay-period-list>

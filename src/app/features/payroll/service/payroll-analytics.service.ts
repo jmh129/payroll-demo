@@ -11,11 +11,8 @@ import {
 } from '../../employees/models/employee.model';
 
 /**
- * PayrollAnalytics - Service for analyzing payroll data
- *
- * This service provides methods for analyzing payroll data without modifying
- * the data itself. It's designed to be extended with additional analytics
- * functions as needed.
+ * Service for analyzing and processing payroll data
+ * Contains business logic for payroll calculations and organization
  */
 @Injectable({
   providedIn: 'root',
@@ -57,19 +54,6 @@ export class PayrollAnalytics {
   }
 
   /**
-   * Get all payslips associated with paid pay periods
-   */
-  getPaidPayslips(payslips: Payslip[], payPeriods: PayPeriod[]): Payslip[] {
-    const periodMap = new Map<string, PayPeriod>();
-    payPeriods.forEach((period) => periodMap.set(period.id, period));
-
-    return payslips.filter((p) => {
-      const period = periodMap.get(p.periodId);
-      return period?.status === PayPeriodStatus.Paid;
-    });
-  }
-
-  /**
    * Get payslips with employee details
    */
   getPayslipsWithDetails(
@@ -87,6 +71,39 @@ export class PayrollAnalytics {
         periodStatus: payPeriod?.status || PayPeriodStatus.Pending,
       };
     });
+  }
+
+  /**
+   * Group payslips by pay period
+   * @returns Record where keys are period IDs and values are arrays of payslips
+   */
+  groupPayslipsByPeriod(
+    payslipsWithDetails: PayslipWithDetails[],
+    payPeriods: PayPeriod[]
+  ): Array<{ periodId: string; items: PayslipWithDetails[] }> {
+    // Group payslips by period
+    const groupedPayslips: Record<string, PayslipWithDetails[]> = {};
+
+    // First, initialize groups for all pay periods (even empty ones)
+    payPeriods.forEach((period) => {
+      groupedPayslips[period.id] = [];
+    });
+
+    // Then add payslips to their respective groups
+    payslipsWithDetails.forEach((item) => {
+      if (groupedPayslips[item.payslip.periodId]) {
+        groupedPayslips[item.payslip.periodId].push(item);
+      }
+    });
+
+    // Convert to array for easier handling in template
+    const groups = Object.keys(groupedPayslips).map((periodId) => ({
+      periodId,
+      items: groupedPayslips[periodId],
+    }));
+
+    // Sort by periodId in descending order (newest first)
+    return groups.sort((a, b) => b.periodId.localeCompare(a.periodId));
   }
 
   /**
@@ -124,38 +141,18 @@ export class PayrollAnalytics {
   }
 
   /**
-   * Get total deductions by type across all payslips
+   * Calculate the total net pay for a group of payslips
    */
-  getTotalDeductionsByType(payslips: Payslip[]): Record<string, number> {
-    const deductionTotals: Record<string, number> = {};
-
-    payslips.forEach((payslip) => {
-      payslip.deductions.forEach((deduction) => {
-        const type = deduction.type;
-        if (!deductionTotals[type]) {
-          deductionTotals[type] = 0;
-        }
-        deductionTotals[type] += deduction.amount;
-      });
-    });
-
-    return deductionTotals;
+  calculatePeriodTotal(payslips: PayslipWithDetails[]): number {
+    return payslips.reduce((sum, item) => sum + item.payslip.netPay, 0);
   }
 
   /**
-   * Calculate average salary across all active employees
+   * Get the status of a pay period
    */
-  calculateAverageSalary(employees: Employee[]): number {
-    const activeEmployees = employees.filter(
-      (e) => e.status === EmployeeStatus.Active
-    );
-    if (activeEmployees.length === 0) return 0;
-
-    const totalSalary = activeEmployees.reduce(
-      (sum, emp) => sum + emp.baseSalary,
-      0
-    );
-    return totalSalary / activeEmployees.length;
+  getPeriodStatus(periodId: string, payPeriods: PayPeriod[]): PayPeriodStatus {
+    const period = payPeriods.find((p) => p.id === periodId);
+    return period?.status || PayPeriodStatus.Pending;
   }
 
   /**
@@ -168,30 +165,5 @@ export class PayrollAnalytics {
       month: 'short',
       year: 'numeric',
     });
-  }
-
-  /**
-   * Get department payroll distribution
-   */
-  getDepartmentPayrollDistribution(
-    payslips: Payslip[],
-    employees: Employee[]
-  ): Record<string, number> {
-    const departmentTotals: Record<string, number> = {};
-    const employeeMap = new Map<string, Employee>();
-
-    employees.forEach((emp) => employeeMap.set(emp.id, emp));
-
-    payslips.forEach((payslip) => {
-      const employee = employeeMap.get(payslip.employeeId);
-      if (employee?.department) {
-        if (!departmentTotals[employee.department]) {
-          departmentTotals[employee.department] = 0;
-        }
-        departmentTotals[employee.department] += payslip.netPay;
-      }
-    });
-
-    return departmentTotals;
   }
 }

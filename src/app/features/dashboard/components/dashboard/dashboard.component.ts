@@ -10,13 +10,15 @@ import { MatDividerModule } from '@angular/material/divider';
 // Models
 import {
   PayPeriod,
-  Payslip,
   PayPeriodStatus,
 } from '../../../payroll/models/payroll.model';
-import { EmployeeStatus } from '../../../employees/models/employee.model';
 
-// Service
+// Services
 import { PayrollService } from '../../../payroll/service/payroll.service';
+import { PayrollAnalytics } from '../../../payroll/service/payroll-analytics.service';
+
+// Components
+import { PayrollChartComponent } from '../../../payroll/components/payroll-chart/payroll-chart.component';
 
 @Component({
   standalone: true,
@@ -27,6 +29,7 @@ import { PayrollService } from '../../../payroll/service/payroll.service';
     MatListModule,
     MatDividerModule,
     CurrencyPipe,
+    PayrollChartComponent,
   ],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -38,23 +41,27 @@ export class DashboardComponent {
 
   PayPeriodStatus = PayPeriodStatus;
 
-  constructor(private payrollService: PayrollService, private router: Router) {
-    this.payPeriods.set(this.payrollService.getPayPeriods()());
+  constructor(
+    private payrollService: PayrollService,
+    private payrollAnalytics: PayrollAnalytics,
+    private router: Router
+  ) {
+    this.updateDashboardData();
+  }
+
+  updateDashboardData(): void {
+    // Get latest data
+    const employees = this.payrollService.getEmployees()();
+    const payPeriods = this.payrollService.getPayPeriods()();
+    const payslips = this.payrollService.getPayslips()();
+
+    // Update signals using analytics service
+    this.payPeriods.set(payPeriods);
     this.activeEmployeeCount.set(
-      this.payrollService
-        .getEmployees()()
-        .filter((e) => e.status === EmployeeStatus.Active).length
+      this.payrollAnalytics.getActiveEmployeeCount(employees)
     );
-    const lastProcessedPayslips: Payslip[] = this.payrollService
-      .getPayslips()()
-      .filter((p) => {
-        const period = this.payrollService
-          .getPayPeriods()()
-          .find((pp) => pp.id === p.periodId);
-        return period?.status === PayPeriodStatus.Processed;
-      });
     this.lastPayrollCost.set(
-      lastProcessedPayslips.reduce((sum, p) => sum + p.netPay, 0)
+      this.payrollAnalytics.getLastProcessedPayrollCost(payslips, payPeriods)
     );
   }
 
@@ -62,21 +69,8 @@ export class DashboardComponent {
     // Process the payroll
     this.payrollService.processPayroll(period.id);
 
-    // Update the local data to reflect the changes
-    this.payPeriods.set(this.payrollService.getPayPeriods()());
-
-    // Also update the last payroll cost since a new period was processed
-    const lastProcessedPayslips: Payslip[] = this.payrollService
-      .getPayslips()()
-      .filter((p) => {
-        const period = this.payrollService
-          .getPayPeriods()()
-          .find((pp) => pp.id === p.periodId);
-        return period?.status === PayPeriodStatus.Processed;
-      });
-    this.lastPayrollCost.set(
-      lastProcessedPayslips.reduce((sum, p) => sum + p.netPay, 0)
-    );
+    // Update all dashboard data
+    this.updateDashboardData();
   }
 
   navigateToPayroll(): void {

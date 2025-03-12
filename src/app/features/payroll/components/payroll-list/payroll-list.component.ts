@@ -15,9 +15,10 @@ import {
   PayPeriodStatus,
 } from '../../models/payroll.model';
 
-// Service
+// Services
 import { PayrollService } from '../../service/payroll.service';
 import { PayrollFilterService } from '../../service/payroll-filter.service';
+import { PayrollAnalytics } from '../../service/payroll-analytics.service';
 
 // Components
 import { PayrollToolbarComponent } from '../payroll-toolbar/payroll-toolbar.component';
@@ -47,18 +48,24 @@ export class PayrollListComponent {
 
   constructor(
     private payrollService: PayrollService,
+    private payrollAnalytics: PayrollAnalytics,
     private dialog: MatDialog,
     public filterService: PayrollFilterService
   ) {
-    this.payslips.set(this.payrollService.getPayslips()());
-    this.payPeriods.set(this.payrollService.getPayPeriods()());
-    this.updateFilteredPayslips();
+    this.updatePayrollData();
 
     effect(() => {
-      this.payslips.set(this.payrollService.getPayslips()());
-      this.payPeriods.set(this.payrollService.getPayPeriods()());
-      this.updateFilteredPayslips();
+      this.updatePayrollData();
     });
+  }
+
+  updatePayrollData(): void {
+    const payslips = this.payrollService.getPayslips()();
+    const payPeriods = this.payrollService.getPayPeriods()();
+
+    this.payslips.set(payslips);
+    this.payPeriods.set(payPeriods);
+    this.updateFilteredPayslips();
   }
 
   onPayslipClick(payslip: Payslip): void {
@@ -81,19 +88,11 @@ export class PayrollListComponent {
       this.payPeriods()
     );
 
-    const payslipsWithDetails: PayslipWithDetails[] = filteredPayslips.map(
-      (payslip) => {
-        const employee = employees.find((e) => e.id === payslip.employeeId);
-        const payPeriod = this.payPeriods().find(
-          (p) => p.id === payslip.periodId
-        );
-
-        return {
-          payslip,
-          employeeName: employee?.name || payslip.employeeId,
-          periodStatus: payPeriod?.status || PayPeriodStatus.Pending,
-        };
-      }
+    // Use analytics service to get detailed payslips
+    const payslipsWithDetails = this.payrollAnalytics.getPayslipsWithDetails(
+      filteredPayslips,
+      employees,
+      this.payPeriods()
     );
 
     this.filteredPayslips.set(payslipsWithDetails);

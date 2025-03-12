@@ -19,4 +19,22 @@ export const MOCK_PAY_PERIODS: PayPeriod[] = [
     endDate: '2025-01-31',
     status: PayPeriodStatus.Paid,
   },
+  {
+    id: 'PER-2024-12',
+    startDate: '2024-12-01',
+    endDate: '2024-12-31',
+    status: PayPeriodStatus.Paid,
+  },
+  {
+    id: 'PER-2024-11',
+    startDate: '2024-11-01',
+    endDate: '2024-11-30',
+    status: PayPeriodStatus.Paid,
+  },
+  {
+    id: 'PER-2024-10',
+    startDate: '2024-10-01',
+    endDate: '2024-10-31',
+    status: PayPeriodStatus.Paid,
+  },
 ];

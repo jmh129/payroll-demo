@@ -2,9 +2,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UserProfileComponent } from '../../../features/account/components/user-profile/user-profile.component';
-import { CURRENT_USER } from '../../../features/account/data/user.mock';
 import { MatDialog } from '@angular/material/dialog';
+
+// Mocks
+import { CURRENT_USER } from '../../../features/account/data/user.mock';
+
+// Components
+import { UserProfileComponent } from '../../../features/account/components/user-profile/user-profile.component';
 
 @Component({
   selector: 'app-header',

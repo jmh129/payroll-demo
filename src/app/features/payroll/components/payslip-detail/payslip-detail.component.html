@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Payslip - {{ employeeName }}</h2>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item>
+      <mat-icon matListItemIcon>person</mat-icon>
+      <span matListItemTitle>Employee ID: {{ payslip.employeeId }}</span>
+      <span matListItemLine>Period: {{ payslip.periodId }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon matListItemIcon>attach_money</mat-icon>
+      <span matListItemTitle>Gross Pay: {{ payslip.grossPay | currency }}</span>
+      <span matListItemLine>Net Pay: {{ payslip.netPay | currency }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon matListItemIcon>list</mat-icon>
+      <span matListItemTitle>Deductions:</span>
+      @for (deduction of payslip.deductions; track deduction.type) {
+      <span matListItemLine>
+        {{ deduction.type }}: {{ deduction.amount | currency }} @if
+        (deduction.percentage) { ({{ deduction.percentage * 100 }}%) }
+      </span>
+      }
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon matListItemIcon>calendar_today</mat-icon>
+      <span matListItemTitle>Payment Date: {{ payslip.paymentDate }}</span>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

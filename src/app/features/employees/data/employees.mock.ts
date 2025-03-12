@@ -1,4 +1,3 @@
-// src/app/data/mock-employees.data.ts
 import { Employee, EmployeeStatus } from '../models/employee.model';
 
 export const MOCK_EMPLOYEES: Employee[] = [

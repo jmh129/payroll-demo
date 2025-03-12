@@ -1,12 +1,6 @@
-/**
- * Country data with locale codes
- */
 export interface CountryLocale {
-  /** Country name */
   name: string;
-  /** ISO 3166-1 alpha-2 country code */
   code: string;
-  /** Locale code */
   locale: string;
 }
 

@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
+// Config
 import { APP_CONFIG_TOKEN } from '../../../core/config/app.config';
 
 @Component({

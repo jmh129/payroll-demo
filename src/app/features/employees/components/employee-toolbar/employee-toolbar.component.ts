@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Models
 import { EmployeeStatus } from '../../models/employee.model';
@@ -24,6 +25,7 @@ import { EmployeeFilterService } from '../../service/employee-filter.service';
     MatButtonModule,
     MatMenuModule,
     MatChipsModule,
+    MatCheckboxModule,
   ],
   selector: 'app-employee-toolbar',
   templateUrl: './employee-toolbar.component.html',

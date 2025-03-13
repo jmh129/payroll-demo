@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Service
 import {
@@ -25,9 +26,11 @@ import {
     MatMenuModule,
     MatChipsModule,
     MatDividerModule,
+    MatCheckboxModule,
   ],
   selector: 'app-payroll-toolbar',
   templateUrl: './payroll-toolbar.component.html',
+  styleUrls: ['./payroll-toolbar.component.scss'],
 })
 export class PayrollToolbarComponent {
   @Output() filterChange = new EventEmitter<void>();

@@ -1,12 +1,7 @@
 <mat-toolbar>
-  <mat-toolbar-row>
+  <mat-toolbar-row class="search-row">
     <mat-form-field>
-      <mat-label>Search</mat-label>
-      <input
-        matInput
-        placeholder="Search employees"
-        (input)="onSearch($event)"
-      />
+      <input matInput placeholder="Search" (input)="onSearch($event)" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <span style="flex: 1 1 auto"></span>
@@ -27,17 +22,15 @@
     <!-- Dynamic filter submenu -->
     <mat-menu #filterMenu="matMenu">
       @for (status of employeeStatuses; track status) {
-      <button
-        mat-menu-item
-        (click)="filterService.toggleFilter(status); filterChange.emit()"
-      >
-        <mat-icon>{{
-          filterService.selectedFilters().includes(status)
-            ? "check_box"
-            : "check_box_outline_blank"
-        }}</mat-icon>
-        <span>{{ status }}</span>
-      </button>
+
+      <div mat-menu-item>
+        <mat-checkbox
+          (change)="filterService.toggleFilter(status); filterChange.emit()"
+          [checked]="filterService.selectedFilters().includes(status)"
+        >
+          {{ status }}
+        </mat-checkbox>
+      </div>
       }
       <mat-divider></mat-divider>
       <button
@@ -52,9 +45,9 @@
 
   <!-- Filter Chips Row -->
   @if (filterService.selectedFilters().length > 0) {
-  <mat-toolbar-row>
+  <mat-toolbar-row class="chip-container">
     @for (filter of filterService.selectedFilters(); track filter) {
-    <mat-chip>
+    <mat-chip highlighted color="primary">
       {{ filter }}
       <button
         matChipRemove

@@ -37,6 +37,7 @@ import { AssignEmployeesToPeriodDialogComponent } from '../../components/dialogs
   ],
   selector: 'app-payroll',
   templateUrl: './payroll.component.html',
+  styleUrls: ['./payroll.component.scss'],
 })
 export class PayrollComponent {
   payslips = signal<Payslip[]>([]);

@@ -1,0 +1,15 @@
+.search-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.search-row mat-form-field {
+  flex-grow: 1;
+}
+
+.chip-container {
+  height: auto;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  gap: 0.5rem;
+}

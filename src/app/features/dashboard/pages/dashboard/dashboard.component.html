@@ -1,23 +1,15 @@
 <div>
-  <!-- Metrics Row -->
-  <div>
-    <mat-card>
-      <mat-card-content>
-        <mat-card-subtitle>Summary</mat-card-subtitle>
-        <mat-chip-set>
-          <mat-chip>Active Employees: {{ activeEmployeeCount() }}</mat-chip>
-          <mat-chip
-            >Last Payroll Cost: {{ lastPayrollCost() | currency }}</mat-chip
-          >
-        </mat-chip-set>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
   <!-- Chart Row -->
   <div>
     <app-payroll-chart></app-payroll-chart>
   </div>
+
+  <!-- Metrics Row -->
+  <app-dashboard-metrics
+    [activeEmployeeCount]="activeEmployeeCount()"
+    [lastPayrollCost]="lastPayrollCost()"
+    [payrollCostChange]="payrollCostChange()"
+  ></app-dashboard-metrics>
 
   <!-- Pay Periods Row -->
   <div>
@@ -27,19 +19,5 @@
       (processPayroll)="processPayroll($event)"
       (periodClick)="navigateToPayrollWithPeriod($event)"
     ></app-pay-period-list>
-  </div>
-
-  <!-- Actions Row -->
-  <div>
-    <mat-card>
-      <mat-card-actions>
-        <button mat-button color="primary" (click)="navigateToPayroll()">
-          View Payroll
-        </button>
-        <button mat-button color="primary" (click)="navigateToEmployees()">
-          View Employees
-        </button>
-      </mat-card-actions>
-    </mat-card>
   </div>
 </div>

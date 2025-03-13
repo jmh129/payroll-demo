@@ -37,6 +37,40 @@ export class PayrollAnalytics {
   }
 
   /**
+   * Calculate monthly payroll costs
+   */
+  calculateMonthlyPayrollCosts(
+    payslips: Payslip[],
+    payPeriods: PayPeriod[]
+  ): Record<string, number> {
+    // Create a map for quick period lookup
+    const periodMap = new Map<string, PayPeriod>();
+    payPeriods.forEach((period) => periodMap.set(period.id, period));
+
+    // Group payslips by month and sum the net pay
+    const monthlyTotals: Record<string, number> = {};
+
+    payslips.forEach((payslip) => {
+      const period = periodMap.get(payslip.periodId);
+      if (
+        period &&
+        (period.status === PayPeriodStatus.Processed ||
+          period.status === PayPeriodStatus.Paid)
+      ) {
+        // Extract month from end date (format: YYYY-MM)
+        const monthKey = period.endDate.substring(0, 7);
+
+        if (!monthlyTotals[monthKey]) {
+          monthlyTotals[monthKey] = 0;
+        }
+        monthlyTotals[monthKey] += payslip.netPay;
+      }
+    });
+
+    return monthlyTotals;
+  }
+
+  /**
    * Get all payslips associated with processed pay periods
    */
   getProcessedPayslips(
@@ -107,37 +141,31 @@ export class PayrollAnalytics {
   }
 
   /**
-   * Calculate monthly payroll costs
+   * Calculate the percentage change in payroll cost between the last two processed periods
    */
-  calculateMonthlyPayrollCosts(
-    payslips: Payslip[],
-    payPeriods: PayPeriod[]
-  ): Record<string, number> {
-    // Create a map for quick period lookup
-    const periodMap = new Map<string, PayPeriod>();
-    payPeriods.forEach((period) => periodMap.set(period.id, period));
+  getPayrollCostChange(payslips: Payslip[], payPeriods: PayPeriod[]): number {
+    const processedPeriods = payPeriods
+      .filter((p) => p.status === PayPeriodStatus.Processed)
+      .sort((a, b) => a.endDate.localeCompare(b.endDate));
 
-    // Group payslips by month and sum the net pay
-    const monthlyTotals: Record<string, number> = {};
+    if (processedPeriods.length < 2) return 0;
 
-    payslips.forEach((payslip) => {
-      const period = periodMap.get(payslip.periodId);
-      if (
-        period &&
-        (period.status === PayPeriodStatus.Processed ||
-          period.status === PayPeriodStatus.Paid)
-      ) {
-        // Extract month from end date (format: YYYY-MM)
-        const monthKey = period.endDate.substring(0, 7);
+    const latestPeriod = processedPeriods[processedPeriods.length - 1];
+    const previousPeriod = processedPeriods[processedPeriods.length - 2];
 
-        if (!monthlyTotals[monthKey]) {
-          monthlyTotals[monthKey] = 0;
-        }
-        monthlyTotals[monthKey] += payslip.netPay;
-      }
-    });
+    const latestPayslips = payslips.filter(
+      (p) => p.periodId === latestPeriod.id
+    );
+    const previousPayslips = payslips.filter(
+      (p) => p.periodId === previousPeriod.id
+    );
 
-    return monthlyTotals;
+    const latestCost = latestPayslips.reduce((sum, p) => sum + p.netPay, 0);
+    const previousCost = previousPayslips.reduce((sum, p) => sum + p.netPay, 0);
+
+    return previousCost
+      ? ((latestCost - previousCost) / previousCost) * 100
+      : 0;
   }
 
   /**

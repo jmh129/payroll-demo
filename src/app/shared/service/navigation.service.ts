@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Routes } from '@angular/router';
-
 // Routes
 import { routes } from '../../app.routes';
 
 export interface NavItem {
   path: string;
   title: string;
+  icon: string;
 }
 
 @Injectable({
@@ -30,6 +30,7 @@ export class NavigationService {
         .map((route) => ({
           path: `/${route.path}`,
           title: this.capitalize(route.path || ''),
+          icon: route.data?.['icon'] || 'circle',
         })),
     ];
     return items;

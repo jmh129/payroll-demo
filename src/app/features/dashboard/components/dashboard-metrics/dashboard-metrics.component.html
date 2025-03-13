@@ -1,0 +1,8 @@
+<div class="metrics">
+  <h2>Summary</h2>
+  <mat-chip-set aria-label="Dashboard Metrics">
+    <mat-chip>Active Employees: {{ activeEmployeeCount }}</mat-chip>
+    <mat-chip>Last Payroll: {{ lastPayrollCost | currency }}</mat-chip>
+    <mat-chip>% Change: {{ payrollCostChange | number : "1.2-2" }}%</mat-chip>
+  </mat-chip-set>
+</div>

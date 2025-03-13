@@ -9,9 +9,7 @@
       @for (period of payPeriods; track period.id) {
       <mat-expansion-panel [expanded]="isCurrentPeriod(period.id)">
         <mat-expansion-panel-header>
-          <mat-panel-title
-            >{{ period.startDate }} - {{ period.endDate }}</mat-panel-title
-          >
+          <mat-panel-title>{{ period.startDate }}</mat-panel-title>
           <mat-panel-description>
             <mat-chip
               [color]="

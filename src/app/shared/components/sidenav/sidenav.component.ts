@@ -2,13 +2,14 @@ import { Component, Input, signal, computed } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, Router } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 // Service
 import { NavItem, NavigationService } from '../../service/navigation.service';
 
 @Component({
   standalone: true,
-  imports: [MatSidenavModule, RouterModule, MatListModule],
+  imports: [MatSidenavModule, RouterModule, MatListModule, MatIconModule],
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],

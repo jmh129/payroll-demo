@@ -12,6 +12,9 @@ export const routes: Routes = [
       import('./features/dashboard/pages/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
+    data: {
+      icon: 'dashboard',
+    },
   },
   {
     path: 'employees',
@@ -19,6 +22,9 @@ export const routes: Routes = [
       import('./features/employees/pages/employee/employee.component').then(
         (m) => m.EmployeeComponent
       ),
+    data: {
+      icon: 'people',
+    },
   },
   {
     path: 'payroll',
@@ -26,5 +32,8 @@ export const routes: Routes = [
       import('./features/payroll/pages/payroll/payroll.component').then(
         (m) => m.PayrollComponent
       ),
+    data: {
+      icon: 'payments',
+    },
   },
 ];

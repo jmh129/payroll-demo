@@ -1,3 +1,8 @@
+/**
+ * EmployeeFilterService manages filtering logic for employees based on search terms and status filters.
+ * It uses signals to maintain reactive state.
+ */
+
 import { Injectable, signal } from '@angular/core';
 
 // Model
@@ -10,6 +15,11 @@ export class EmployeeFilterService {
   searchTerm = signal<string>('');
   selectedFilters = signal<EmployeeStatus[]>([]);
 
+  /**
+   * Filters an array of employees based on the current search term and selected filters.
+   * @param employees The full list of employees to filter
+   * @returns The filtered list of employees
+   */
   filterEmployees(employees: Employee[]): Employee[] {
     const filters = this.selectedFilters();
     const term = this.searchTerm();
@@ -24,10 +34,18 @@ export class EmployeeFilterService {
     });
   }
 
+  /**
+   * Sets the search term for filtering employees.
+   * @param term The search term to set
+   */
   setSearchTerm(term: string): void {
     this.searchTerm.set(term.toLowerCase());
   }
 
+  /**
+   * Toggles a status filter on or off in the selected filters list.
+   * @param status The status to toggle
+   */
   toggleFilter(status: EmployeeStatus): void {
     this.selectedFilters.update((filters) =>
       filters.includes(status)
@@ -36,10 +54,17 @@ export class EmployeeFilterService {
     );
   }
 
+  /**
+   * Clears all selected status filters.
+   */
   clearFilters(): void {
     this.selectedFilters.set([]);
   }
 
+  /**
+   * Removes a specific status from the selected filters.
+   * @param status The status to remove
+   */
   removeFilter(status: EmployeeStatus): void {
     this.selectedFilters.update((filters) =>
       filters.filter((f) => f !== status)

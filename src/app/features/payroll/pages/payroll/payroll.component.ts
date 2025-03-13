@@ -1,9 +1,14 @@
+/**
+ * Component for managing payroll operations and displaying payroll data
+ * Serves as the main interface for payroll administration
+ */
+
 import { Component, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 // Models
 import {
@@ -67,6 +72,16 @@ export class PayrollComponent {
     });
   }
 
+  /**
+   * Creates an instance of PayrollComponent
+   * Initializes data and sets up subscriptions
+   * @param route Angular route service for accessing URL parameters
+   * @param dialog Material dialog service for opening modal dialogs
+   * @param payrollService Service for payroll data operations
+   * @param payrollAnalytics Service for payroll calculations and analytics
+   * @param filterService Service for filtering payroll data
+   * @param notification Service for displaying user notifications
+   */
   updatePayrollData(): void {
     const payslips = this.payrollService.getPayslips()();
     const payPeriods = this.payrollService.getPayPeriods()();
@@ -101,12 +116,20 @@ export class PayrollComponent {
     }
   }
 
+  /**
+   * Updates all payroll data from services
+   * Refreshes signals with the latest information
+   */
   onPayslipClick(payslipWithDetails: PayslipWithDetails): void {
     this.dialog.open(PayslipDetailComponent, {
       data: payslipWithDetails.payslip,
     });
   }
 
+  /**
+   * Handles payslip click event by opening the payslip detail dialog
+   * @param payslipWithDetails The selected payslip with details
+   */
   addNewPayPeriod(): void {
     const dialogRef = this.dialog.open(AddPayPeriodDialogComponent);
 
@@ -127,6 +150,10 @@ export class PayrollComponent {
     });
   }
 
+  /**
+   * Opens dialog to assign employees to a pay period
+   * @param periodId The ID of the pay period to assign employees to
+   */
   assignEmployeesToPeriod(periodId: string): void {
     const period = this.payPeriods().find((p) => p.id === periodId);
     if (!period) {
@@ -158,6 +185,10 @@ export class PayrollComponent {
     });
   }
 
+  /**
+   * Processes payroll for a specific pay period
+   * @param period The pay period to process
+   */
   processPayroll(period: PayPeriod): void {
     this.payrollService.processPayroll(period.id);
     this.notification.success(

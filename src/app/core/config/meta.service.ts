@@ -36,6 +36,11 @@ export class MetaService {
       name: 'application-name',
       content: this.config.siteName,
     });
+
+    this.meta.addTag({
+      name: 'keywords',
+      content: (this.config.meta.keywords ?? []).join(', '),
+    });
   }
 
   /**
@@ -55,11 +60,13 @@ export class MetaService {
   /**
    * Set route-specific meta tags
    */
-  setRouteMetaTags(title: string, description?: string): void {
+  setRouteMetaTags(
+    title: string,
+    description?: string,
+    keywords?: string[]
+  ): void {
     this.updateTitle(`${title} | ${this.config.siteName}`);
-
-    if (description) {
-      this.updateMetaTag('description', description);
-    }
+    if (description) this.updateMetaTag('description', description);
+    if (keywords) this.updateMetaTag('keywords', keywords.join(', '));
   }
 }

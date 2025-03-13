@@ -1,3 +1,8 @@
+/**
+ * Component for providing payroll filtering and action controls
+ * Contains search, filter options, and action buttons for payroll management
+ */
+
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -41,6 +46,11 @@ export class PayrollToolbarComponent {
 
   constructor(public filterService: PayrollFilterService) {}
 
+  /**
+   * Handles search input changes
+   * Updates the filter service with the new search term and emits a filter change event
+   * @param event The input event containing the search value
+   */
   onSearch(event: Event): void {
     const searchValue = (event.target as HTMLInputElement).value;
     this.filterService.setSearchTerm(searchValue);

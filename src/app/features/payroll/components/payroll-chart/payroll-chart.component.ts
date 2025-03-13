@@ -1,3 +1,8 @@
+/**
+ * Component for displaying payroll data trends in a line chart
+ * Shows monthly payroll costs using Chart.js
+ */
+
 import {
   Component,
   ViewChild,
@@ -94,10 +99,10 @@ export class PayrollChartComponent implements AfterViewInit, OnDestroy {
             {
               label: 'Total Payroll Cost',
               data: data,
-              backgroundColor: 'rgba(63, 81, 181, 0.2)', // Primary color with transparency
-              borderColor: 'rgba(63, 81, 181, 1)', // Primary color
+              backgroundColor: 'rgba(63, 81, 181, 0.2)',
+              borderColor: 'rgba(63, 81, 181, 1)',
               borderWidth: 2,
-              tension: 0.3, // Slightly curved lines
+              tension: 0.3,
               pointBackgroundColor: 'rgba(63, 81, 181, 1)',
               pointRadius: 4,
               fill: true,
@@ -144,6 +149,11 @@ export class PayrollChartComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Updates the chart with new data
+   * @param labels The x-axis labels (month names)
+   * @param data The y-axis data (payroll costs)
+   */
   private updateChart(labels: string[], data: number[]): void {
     if (this.chart) {
       this.chart.data.labels = labels;
@@ -152,6 +162,12 @@ export class PayrollChartComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Prepares data for the chart from payroll data
+   * @param payslips The array of payslips to analyze
+   * @param payPeriods The array of pay periods for reference
+   * @returns Object containing labels and data arrays for the chart
+   */
   private prepareChartData(
     payslips: Payslip[],
     payPeriods: PayPeriod[]

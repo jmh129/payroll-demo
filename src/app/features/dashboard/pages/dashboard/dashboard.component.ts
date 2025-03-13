@@ -1,3 +1,9 @@
+/**
+ * DashboardComponent serves as the main dashboard page, displaying payroll metrics,
+ * a chart, and pay period list. It integrates with payroll services for data updates.
+ * @standalone
+ */
+
 import { Component, signal, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';

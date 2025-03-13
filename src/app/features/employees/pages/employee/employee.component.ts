@@ -1,3 +1,9 @@
+/**
+ * EmployeeComponent displays a list of employees with filtering and editing capabilities.
+ * It integrates a toolbar for actions and a dialog for profile management.
+ * @standalone
+ */
+
 import { Component, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
@@ -32,6 +38,10 @@ export class EmployeeComponent {
     this.updateFilteredEmployees();
   }
 
+  /**
+   * Opens the employee profile dialog when an employee is clicked and updates data on close.
+   * @param employee The employee to view/edit
+   */
   onEmployeeClick(employee: Employee): void {
     const dialogRef = this.dialog.open(EmployeeProfileComponent, {
       data: employee,
@@ -49,6 +59,9 @@ export class EmployeeComponent {
     });
   }
 
+  /**
+   * Opens the employee profile dialog to add a new employee and updates data on close.
+   */
   onAddEmployee(): void {
     const dialogRef = this.dialog.open(EmployeeProfileComponent, {
       data: null,
@@ -61,6 +74,9 @@ export class EmployeeComponent {
     });
   }
 
+  /**
+   * Updates the displayed employee list based on current filters from the filter service.
+   */
   updateFilteredEmployees(): void {
     this.employees.set(this.filterService.filterEmployees(this.allEmployees));
   }

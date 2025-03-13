@@ -1,3 +1,9 @@
+/**
+ * EmployeeProfileComponent displays and edits an employee's profile in a dialog.
+ * It supports both viewing and editing modes, with form validation for updates or new employee creation.
+ * @standalone
+ */
+
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -111,6 +117,9 @@ export class EmployeeProfileComponent {
     });
   }
 
+  /**
+   * Toggles between edit and view modes, resetting form if canceling edits.
+   */
   toggleEditMode(): void {
     this.editMode = !this.editMode;
     if (!this.editMode && !this.isNewEmployee) {
@@ -132,6 +141,10 @@ export class EmployeeProfileComponent {
     }
   }
 
+  /**
+   * Updates the hire date when selected via the datepicker.
+   * @param event The datepicker change event
+   */
   onDateChange(event: any): void {
     if (event.value) {
       this.dateValue = event.value;
@@ -141,11 +154,19 @@ export class EmployeeProfileComponent {
     }
   }
 
+  /**
+   * Retrieves the full country name from a country code.
+   * @param countryCode The ISO country code
+   * @returns The country name or the code if not found
+   */
   getCountryName(countryCode: string): string {
     const country = this.countries.find((c) => c.code === countryCode);
     return country ? country.name : countryCode;
   }
 
+  /**
+   * Saves changes to the employee profile and closes the dialog.
+   */
   saveChanges(): void {
     if (this.employeeForm.invalid) {
       this.notification.error('Please fix the validation errors before saving');
@@ -184,6 +205,12 @@ export class EmployeeProfileComponent {
     }
   }
 
+  /**
+   * Checks if a form control has a specific error and has been interacted with.
+   * @param controlName The name of the form control
+   * @param errorType The type of error to check for
+   * @returns True if the error exists and the control is touched/dirty
+   */
   hasError(controlName: string, errorType: string): boolean {
     const control = this.employeeForm.get(controlName);
     return control

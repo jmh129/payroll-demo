@@ -1,3 +1,8 @@
+/**
+ * Service for filtering payslips based on search terms and status filters
+ * @Injectable Provided at the root level for app-wide access
+ */
+
 import { Injectable, signal } from '@angular/core';
 
 // Model
@@ -16,6 +21,13 @@ export class PayrollFilterService {
   searchTerm = signal<string>('');
   selectedFilters = signal<PayrollFilterType[]>([]);
 
+  /**
+   * Filters payslips based on the current search term and selected filters
+   * @param payslips The array of payslips to filter
+   * @param employees The array of employees to match with payslips
+   * @param payPeriods The array of pay periods to match with payslips
+   * @returns Filtered array of payslips
+   */
   filterPayslips(
     payslips: Payslip[],
     employees: any[],
@@ -52,10 +64,18 @@ export class PayrollFilterService {
     });
   }
 
+  /**
+   * Sets the search term for filtering payslips
+   * @param term The search term to set (will be converted to lowercase)
+   */
   setSearchTerm(term: string): void {
     this.searchTerm.set(term.toLowerCase());
   }
 
+  /**
+   * Toggles a filter type in the selected filters
+   * @param type The filter type to toggle
+   */
   toggleFilter(type: PayrollFilterType): void {
     this.selectedFilters.update((filters) => {
       // If "All" is selected, clear other filters
@@ -79,10 +99,17 @@ export class PayrollFilterService {
     });
   }
 
+  /**
+   * Clears all selected filters
+   */
   clearFilters(): void {
     this.selectedFilters.set([]);
   }
 
+  /**
+   * Removes a specific filter from the selected filters
+   * @param type The filter type to remove
+   */
   removeFilter(type: PayrollFilterType): void {
     this.selectedFilters.update((filters) => filters.filter((f) => f !== type));
   }

@@ -1,3 +1,9 @@
+/**
+ * Service for analyzing and processing payroll data
+ * Contains business logic for payroll calculations and organization
+ * @Injectable Provided at the root level for app-wide access
+ */
+
 import { Injectable } from '@angular/core';
 import {
   PayPeriod,
@@ -10,16 +16,14 @@ import {
   EmployeeStatus,
 } from '../../employees/models/employee.model';
 
-/**
- * Service for analyzing and processing payroll data
- * Contains business logic for payroll calculations and organization
- */
 @Injectable({
   providedIn: 'root',
 })
 export class PayrollAnalytics {
   /**
    * Get the count of active employees
+   * @param employees The array of employees to analyze
+   * @returns The number of active employees
    */
   getActiveEmployeeCount(employees: Employee[]): number {
     return employees.filter((e) => e.status === EmployeeStatus.Active).length;
@@ -27,6 +31,9 @@ export class PayrollAnalytics {
 
   /**
    * Get the total cost of the last processed payroll
+   * @param payslips The array of payslips to analyze
+   * @param payPeriods The array of pay periods for reference
+   * @returns The total cost of the last processed payroll
    */
   getLastProcessedPayrollCost(
     payslips: Payslip[],
@@ -38,6 +45,9 @@ export class PayrollAnalytics {
 
   /**
    * Calculate monthly payroll costs
+   * @param payslips The array of payslips to analyze
+   * @param payPeriods The array of pay periods for reference
+   * @returns Object with months as keys and total costs as values
    */
   calculateMonthlyPayrollCosts(
     payslips: Payslip[],
@@ -72,6 +82,9 @@ export class PayrollAnalytics {
 
   /**
    * Get all payslips associated with processed pay periods
+   * @param payslips The array of payslips to filter
+   * @param payPeriods The array of pay periods for reference
+   * @returns Array of payslips associated with processed pay periods
    */
   getProcessedPayslips(
     payslips: Payslip[],
@@ -89,6 +102,10 @@ export class PayrollAnalytics {
 
   /**
    * Get payslips with employee details
+   * @param payslips The array of payslips to enhance
+   * @param employees The array of employees for reference
+   * @param payPeriods The array of pay periods for reference
+   * @returns Array of payslips with additional employee and period details
    */
   getPayslipsWithDetails(
     payslips: Payslip[],
@@ -109,7 +126,9 @@ export class PayrollAnalytics {
 
   /**
    * Group payslips by pay period
-   * @returns Record where keys are period IDs and values are arrays of payslips
+   * @param payslipsWithDetails The array of enhanced payslips to group
+   * @param payPeriods The array of pay periods for reference
+   * @returns Array of objects containing period ID and associated payslips
    */
   groupPayslipsByPeriod(
     payslipsWithDetails: PayslipWithDetails[],
@@ -142,6 +161,9 @@ export class PayrollAnalytics {
 
   /**
    * Calculate the percentage change in payroll cost between the last two processed periods
+   * @param payslips The array of payslips to analyze
+   * @param payPeriods The array of pay periods for reference
+   * @returns Percentage change in payroll cost
    */
   getPayrollCostChange(payslips: Payslip[], payPeriods: PayPeriod[]): number {
     const processedPeriods = payPeriods
@@ -170,6 +192,8 @@ export class PayrollAnalytics {
 
   /**
    * Calculate the total net pay for a group of payslips
+   * @param payslips The array of payslips to sum
+   * @returns Total net pay amount
    */
   calculatePeriodTotal(payslips: PayslipWithDetails[]): number {
     return payslips.reduce((sum, item) => sum + item.payslip.netPay, 0);
@@ -177,6 +201,9 @@ export class PayrollAnalytics {
 
   /**
    * Get the status of a pay period
+   * @param periodId The ID of the pay period to find
+   * @param payPeriods The array of pay periods to search
+   * @returns The status of the specified pay period
    */
   getPeriodStatus(periodId: string, payPeriods: PayPeriod[]): PayPeriodStatus {
     const period = payPeriods.find((p) => p.id === periodId);
@@ -185,6 +212,8 @@ export class PayrollAnalytics {
 
   /**
    * Format month string (YYYY-MM) to readable format
+   * @param monthStr The month string in YYYY-MM format
+   * @returns Formatted month string (e.g., "Jan 2025")
    */
   formatMonthLabel(monthStr: string): string {
     const [year, month] = monthStr.split('-');

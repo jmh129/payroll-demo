@@ -1,3 +1,9 @@
+/**
+ * EmployeeToolbarComponent provides a toolbar for employee list filtering and actions.
+ * It includes a search input, filter menu, and add employee button, emitting events to the parent component.
+ * @standalone
+ */
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDividerModule } from '@angular/material/divider';
@@ -38,6 +44,10 @@ export class EmployeeToolbarComponent {
 
   constructor(public filterService: EmployeeFilterService) {}
 
+  /**
+   * Handles search input events, updating the filter service and notifying the parent.
+   * @param event The input event from the search field
+   */
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.filterService.setSearchTerm(value);

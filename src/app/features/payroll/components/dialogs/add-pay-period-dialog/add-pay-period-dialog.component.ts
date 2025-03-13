@@ -1,3 +1,8 @@
+/**
+ * Component for creating new pay periods via a dialog
+ * Provides form controls for selecting pay period dates
+ */
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -63,6 +68,11 @@ export class AddPayPeriodDialogComponent {
     );
   }
 
+  /**
+   * Validates that the end date is after the start date
+   * @param group The form group to validate
+   * @returns Error object if validation fails, null otherwise
+   */
   dateRangeValidator(group: FormGroup): { [key: string]: boolean } | null {
     const start = group.get('startDate')?.value;
     const end = group.get('endDate')?.value;
@@ -73,6 +83,11 @@ export class AddPayPeriodDialogComponent {
     return null;
   }
 
+  /**
+   * Handles changes to the start date input
+   * Updates form values and generates the period ID
+   * @param event The date change event
+   */
   onStartDateChange(event: any): void {
     if (event.value) {
       this.startDateValue = event.value;
@@ -88,6 +103,11 @@ export class AddPayPeriodDialogComponent {
     }
   }
 
+  /**
+   * Handles changes to the end date input
+   * Updates form values and validates the form
+   * @param event The date change event
+   */
   onEndDateChange(event: any): void {
     if (event.value) {
       this.endDateValue = event.value;
@@ -96,6 +116,12 @@ export class AddPayPeriodDialogComponent {
     }
   }
 
+  /**
+   * Checks if a form control has a specific validation error
+   * @param controlName The name of the control to check
+   * @param errorType The type of error to check for
+   * @returns Boolean indicating if the error exists on the control
+   */
   hasError(controlName: string, errorType: string): boolean {
     const control = this.payPeriodForm.get(controlName);
     return control
@@ -103,10 +129,17 @@ export class AddPayPeriodDialogComponent {
       : false;
   }
 
+  /**
+   * Cancels the dialog without saving
+   */
   cancel(): void {
     this.dialogRef.close();
   }
 
+  /**
+   * Validates and saves the new pay period
+   * Closes the dialog with the created pay period if successful
+   */
   save(): void {
     if (this.payPeriodForm.invalid) {
       this.notification.error('Please fix the validation errors before saving');

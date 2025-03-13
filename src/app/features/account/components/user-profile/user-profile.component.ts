@@ -1,3 +1,9 @@
+/**
+ * UserProfileComponent displays a user's profile details in a dialog.
+ * It supports closing the dialog and a logout action.
+ * @standalone
+ */
+
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {

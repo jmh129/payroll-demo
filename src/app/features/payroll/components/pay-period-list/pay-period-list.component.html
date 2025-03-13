@@ -14,7 +14,6 @@
     @if (findGroup(period.id); as group) {
     <div class="period-summary">
       <mat-chip-set>
-        <!-- Status chip with icon -->
         <mat-chip
           [color]="
             period.status === PayPeriodStatus.Pending ? 'warn' : 'primary'
@@ -57,7 +56,6 @@
     } } @else {
     <div class="period-summary">
       <mat-chip-set>
-        <!-- Status chip with icon -->
         <mat-chip
           [color]="
             period.status === PayPeriodStatus.Pending ? 'warn' : 'primary'
@@ -109,7 +107,6 @@
   <mat-list-item (click)="onPeriodClick(period)">
     <span matListItemTitle>{{ period.startDate }} - {{ period.endDate }}</span>
     <span matListItemMeta>
-      <!-- Status chip with icon -->
       <mat-chip
         [color]="period.status === PayPeriodStatus.Pending ? 'warn' : 'primary'"
         highlighted

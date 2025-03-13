@@ -1,0 +1,28 @@
+// Pay period form styles
+.pay-period-form {
+  min-width: 500px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}

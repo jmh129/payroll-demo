@@ -14,7 +14,7 @@ export interface AppConfig {
 }
 
 export const APP_CONFIG: AppConfig = {
-  siteName: 'Payroll Dashboard',
+  siteName: 'Payroll App Demo',
   version: packageInfo.version,
   meta: {
     description: packageInfo.description,

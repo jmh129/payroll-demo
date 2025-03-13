@@ -2,13 +2,14 @@
 <mat-dialog-content>
   <h3>Pay Period: {{ data.payPeriod.id }}</h3>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field>
     <mat-label>Search Employees</mat-label>
     <input
       matInput
       [formControl]="searchControl"
-      placeholder="Name, role, or department"
+      placeholder="Name, role, or dept."
     />
+    <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
   <div class="selection-actions">
@@ -30,10 +31,6 @@
       >
         {{ employee.name }}
       </mat-checkbox>
-      <span>{{ employee.role }}</span>
-      @if (employee.department) {
-      <mat-chip>{{ employee.department }}</mat-chip>
-      }
     </mat-list-item>
     <mat-divider></mat-divider>
     }

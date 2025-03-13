@@ -4,6 +4,13 @@
   (filterChange)="updateFilteredEmployees()"
 ></app-employee-toolbar>
 
+<div class="employee-section-header">
+  <h2>Employee Directory</h2>
+  <p>Select an employee to view their details</p>
+</div>
+
+<mat-divider />
+
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator="true">
   @for (employee of employees(); track employee.id) {
   <mat-list-option [value]="employee" (click)="onEmployeeClick(employee)">

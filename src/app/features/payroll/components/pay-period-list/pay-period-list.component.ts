@@ -34,6 +34,7 @@ import { PayrollAnalytics } from '../../service/payroll-analytics.service';
     CurrencyPipe,
   ],
   templateUrl: './pay-period-list.component.html',
+  styleUrls: ['./pay-period-list.component.scss'],
 })
 export class PayPeriodListComponent {
   @Input() payPeriods: PayPeriod[] = [];

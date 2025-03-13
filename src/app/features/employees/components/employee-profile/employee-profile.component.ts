@@ -52,6 +52,7 @@ import { NameUtils } from '../../../../shared/utils/nameUtils';
   providers: [provideNativeDateAdapter()],
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
+  styleUrls: ['./employee-profile.component.scss'],
 })
 export class EmployeeProfileComponent {
   editMode = false;

@@ -1,13 +1,14 @@
 {
-  "name": "payroll-dashboard",
+  "name": "payroll-demo",
   "version": "1.0.0",
-  "description": "A demo payroll dashboard built with Angular",
+  "description": "A demo payroll app built with Angular",
   "author": "James Holding",
   "keywords": [
     "payroll",
     "demo",
     "Angular",
-    "dashboard"
+    "dashboard",
+    "hr"
   ],
   "license": "MIT",
   "scripts": {

@@ -4,13 +4,20 @@
 >
 </app-payroll-toolbar>
 
-<app-pay-period-list
-  [payPeriods]="payPeriods()"
-  [payslipGroups]="payrollGroups()"
-  [currentPeriodId]="currentPeriodId()"
-  [expandable]="true"
-  title="Payroll Management"
-  (processPayroll)="processPayroll($event)"
-  (assignEmployees)="assignEmployeesToPeriod($event)"
-  (viewPayslip)="onPayslipClick($event)"
-></app-pay-period-list>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Payroll Overview</mat-card-title>
+    <mat-card-subtitle>Manage pay periods and payslips</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <app-pay-period-list
+      [payPeriods]="payPeriods()"
+      [payslipGroups]="payrollGroups()"
+      [currentPeriodId]="currentPeriodId()"
+      [expandable]="true"
+      (processPayroll)="processPayroll($event)"
+      (assignEmployees)="assignEmployeesToPeriod($event)"
+      (viewPayslip)="onPayslipClick($event)"
+    ></app-pay-period-list>
+  </mat-card-content>
+</mat-card>

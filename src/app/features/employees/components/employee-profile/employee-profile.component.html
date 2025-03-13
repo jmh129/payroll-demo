@@ -5,94 +5,105 @@
 </h2>
 <mat-dialog-content>
   @let isEditing = editMode; @if (isEditing) {
-  <form [formGroup]="employeeForm">
+  <form [formGroup]="employeeForm" class="employee-form">
     <!-- Personal Info -->
-    <div>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
-        <mat-error *ngIf="hasError('name', 'required')"
-          >Name is required</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Role</mat-label>
-        <input matInput formControlName="role" />
-        <mat-error *ngIf="hasError('role', 'required')"
-          >Role is required</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Department</mat-label>
-        <input matInput formControlName="department" />
-      </mat-form-field>
+    <div class="form-section">
+      <h3 class="section-heading">
+        <mat-icon>person</mat-icon> Personal Information
+      </h3>
+      <div class="form-fields">
+        <mat-form-field class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error *ngIf="hasError('name', 'required')"
+            >Name is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Role</mat-label>
+          <input matInput formControlName="role" />
+          <mat-error *ngIf="hasError('role', 'required')"
+            >Role is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Department</mat-label>
+          <input matInput formControlName="department" />
+        </mat-form-field>
+      </div>
     </div>
 
     <!-- Contact Info -->
-    <div>
-      <h3>Contact</h3>
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
-        <mat-error *ngIf="hasError('email', 'required')"
-          >Email is required</mat-error
-        >
-        <mat-error *ngIf="hasError('email', 'email')"
-          >Please enter a valid email address</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Phone</mat-label>
-        <input matInput formControlName="phoneNumber" />
-        <mat-error *ngIf="hasError('phoneNumber', 'pattern')"
-          >Please enter a valid phone number</mat-error
-        >
-      </mat-form-field>
+    <div class="form-section">
+      <h3 class="section-heading"><mat-icon>contact_mail</mat-icon> Contact</h3>
+      <div class="form-fields">
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error *ngIf="hasError('email', 'required')"
+            >Email is required</mat-error
+          >
+          <mat-error *ngIf="hasError('email', 'email')"
+            >Please enter a valid email address</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phoneNumber" />
+          <mat-error *ngIf="hasError('phoneNumber', 'pattern')"
+            >Please enter a valid phone number</mat-error
+          >
+        </mat-form-field>
+      </div>
     </div>
 
     <!-- Employment Details -->
-    <div>
-      <h3>Employment Details</h3>
-      <mat-form-field>
-        <mat-label>Country</mat-label>
-        <mat-select formControlName="country">
-          @for (country of countries; track country.code) {
-          <mat-option [value]="country.code">{{ country.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error *ngIf="hasError('country', 'required')"
-          >Country is required</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Hire Date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="hireDatePicker"
-          formControlName="hireDate"
-          (dateChange)="onDateChange($event)"
-        />
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="hireDatePicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #hireDatePicker></mat-datepicker>
-        <mat-error *ngIf="hasError('hireDate', 'required')"
-          >Hire date is required</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status">
-          @for (status of employeeStatuses; track status) {
-          <mat-option [value]="status">{{ status }}</mat-option>
-          }
-        </mat-select>
-        <mat-error *ngIf="hasError('status', 'required')"
-          >Status is required</mat-error
-        >
-      </mat-form-field>
+    <div class="form-section">
+      <h3 class="section-heading">
+        <mat-icon>work</mat-icon> Employment Details
+      </h3>
+      <div class="form-fields">
+        <mat-form-field class="full-width">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="country">
+            @for (country of countries; track country.code) {
+            <mat-option [value]="country.code">{{ country.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="hasError('country', 'required')"
+            >Country is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Hire Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="hireDatePicker"
+            formControlName="hireDate"
+            (dateChange)="onDateChange($event)"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="hireDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #hireDatePicker></mat-datepicker>
+          <mat-error *ngIf="hasError('hireDate', 'required')"
+            >Hire date is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            @for (status of employeeStatuses; track status) {
+            <mat-option [value]="status">{{ status }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="hasError('status', 'required')"
+            >Status is required</mat-error
+          >
+        </mat-form-field>
+      </div>
     </div>
   </form>
   } @else if (!isNewEmployee && employee) {

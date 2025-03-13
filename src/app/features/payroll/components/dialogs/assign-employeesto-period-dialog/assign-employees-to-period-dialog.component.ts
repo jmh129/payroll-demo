@@ -13,6 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 // Models
 import {
@@ -39,6 +40,7 @@ import { PayrollService } from '../../../service/payroll.service';
     FormsModule,
     ReactiveFormsModule,
     MatChipsModule,
+    MatIconModule,
   ],
   templateUrl: './assign-employees-to-period-dialog.component.html',
 })

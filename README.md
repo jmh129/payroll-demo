@@ -49,7 +49,7 @@ The application follows a feature-based architecture, which promotes:
 - npm or yarn
 
 ### Installation
-- Clone repositoty
+- Clone repo
 - Install deps
 - Start dev server: ng serve
 ## Key Components
